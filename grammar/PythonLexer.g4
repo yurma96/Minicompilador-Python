@@ -130,7 +130,7 @@ ELLIPSIS: '...';
 // Literais
 FLOAT_LITERAL: DIGIT+ '.' DIGIT* | '.' DIGIT+;
 INTEGER_LITERAL: DIGIT+;
-STRING_LITERAL: '"' (~["\\] | '\\' .)* '"' | '\'' (~['\\] | '\\' .)* '\'';
+STRING: '"' (~["\\] | '\\' .)* '"' | '\'' (~['\\] | '\\' .)* '\'';
 
 // Comentarios
 COMMENT: '#' ~[\r\n]* -> skip;

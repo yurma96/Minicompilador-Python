@@ -1,4 +1,4 @@
-﻿parser grammar PythonParser;
+parser grammar PythonParser;
 
 options {
     tokenVocab = PythonLexer;
@@ -24,6 +24,9 @@ iteravel
     : ids
     | func_call
     | RANGE LPAREN argumentos? RPAREN
+    | list
+    | tuple
+    | set
     ;
 
 bloco
@@ -52,8 +55,7 @@ stat
     ;
 
 expr
-    : func_call
-    | operacoesComExpressoes
+    : operacoesComExpressoes
     ;
 
 query
@@ -91,9 +93,51 @@ operacoesComExpressoes
 
 termo
     : func_call
+    | estruturaDados
     | ids
     | numeros
     | expressoesEntreParenteses
+    ;
+
+estruturaDados
+    : string
+    | list
+    | tuple
+    | set
+    | dict
+    ;
+
+string
+    : STRING
+    ;
+
+list
+    : LBRACKET elementos? RBRACKET
+    ;
+
+tuple
+    : LPAREN RPAREN
+    | LPAREN expr COMMA (expr (COMMA expr)*)? COMMA? RPAREN
+    ;
+
+set
+    : LBRACE elementos RBRACE
+    ;
+
+dict
+    : LBRACE paresDict? RBRACE
+    ;
+
+elementos
+    : expr (COMMA expr)* COMMA?
+    ;
+
+paresDict
+    : parDict (COMMA parDict)* COMMA?
+    ;
+
+parDict
+    : expr COLON expr
     ;
 
 ids

@@ -1,0 +1,3 @@
+# Digite aqui o código a ser testado (Remove this line)
+def f(x):
+    return x**2
