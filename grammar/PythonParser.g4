@@ -1,4 +1,4 @@
-parser grammar PythonParser;
+﻿parser grammar PythonParser;
 
 options {
     tokenVocab = PythonLexer;
@@ -9,11 +9,41 @@ code
     ;
 
 stat
-    : expr NEWLINE
+    : expr NEWLINE?
+    | query NEWLINE?
     ;
 
 expr
     : operacoesComExpressoes
+    ;
+
+query
+    : operacoesBooleanasEntreQuerys
+    ;
+
+operacoesBooleanasEntreQuerys
+    : queryTermo ((AND | OR) queryTermo)*
+    ;
+
+queryTermo
+    : valoresBooleanos
+    | relacoesEntreExpressoes
+    | queryEntreParenteses
+    | NOT queryTermo
+    | ids
+    ;
+
+valoresBooleanos
+    : TRUE
+    | FALSE
+    ;
+
+queryEntreParenteses
+    : LPAREN query RPAREN
+    ;
+
+relacoesEntreExpressoes
+    : expr operadorRelacional expr
     ;
 
 operacoesComExpressoes
@@ -48,3 +78,17 @@ operadorAritmetico
     | MOD
     | POWER
     ;
+
+operadorRelacional
+    : EQUAL
+    | NOT_EQUAL
+    | LESS_THAN
+    | GREATER_THAN
+    | LESS_EQUAL
+    | GREATER_EQUAL
+    | IS
+    | IS NOT
+    | IN
+    | NOT IN
+    ;
+
