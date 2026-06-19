@@ -1,11 +1,35 @@
-﻿parser grammar PythonParser;
+parser grammar PythonParser;
 
 options {
     tokenVocab = PythonLexer;
 }
 
 code
-    : stat* EOF
+    : (stat | conditional | func | func_call)* EOF
+    ;
+
+conditional
+    : IF query COLON NEWLINE bloco (ELIF query COLON NEWLINE bloco)* (ELSE COLON NEWLINE bloco)?
+    ;
+
+bloco
+    : (stat | conditional | func | func_call)+
+    ;
+
+func
+    : DEF ids LPAREN parametros? RPAREN COLON NEWLINE bloco
+    ;
+
+parametros
+    : ids (COMMA ids)*
+    ;
+
+func_call
+    : ids LPAREN argumentos? RPAREN
+    ;
+
+argumentos
+    : (expr | query) (COMMA (expr | query))*
     ;
 
 stat
@@ -14,7 +38,8 @@ stat
     ;
 
 expr
-    : operacoesComExpressoes
+    : func_call
+    | operacoesComExpressoes
     ;
 
 query
@@ -51,7 +76,8 @@ operacoesComExpressoes
     ;
 
 termo
-    : ids
+    : func_call
+    | ids
     | numeros
     | expressoesEntreParenteses
     ;
@@ -91,4 +117,3 @@ operadorRelacional
     | IN
     | NOT IN
     ;
-
