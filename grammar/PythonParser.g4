@@ -1,19 +1,33 @@
-parser grammar PythonParser;
+﻿parser grammar PythonParser;
 
 options {
     tokenVocab = PythonLexer;
 }
 
 code
-    : (stat | conditional | func | func_call)* EOF
+    : (stat | conditional | func | func_call | loop_while | loop_for)* EOF
     ;
 
 conditional
     : IF query COLON NEWLINE bloco (ELIF query COLON NEWLINE bloco)* (ELSE COLON NEWLINE bloco)?
     ;
 
+loop_while
+    : WHILE query COLON NEWLINE bloco
+    ;
+
+loop_for
+    : FOR ids IN iteravel COLON NEWLINE bloco
+    ;
+
+iteravel
+    : ids
+    | func_call
+    | RANGE LPAREN argumentos? RPAREN
+    ;
+
 bloco
-    : (stat | conditional | func | func_call)+
+    : (stat | conditional | func | func_call | loop_while | loop_for)+
     ;
 
 func
