@@ -14,6 +14,11 @@ class PythonParserVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by PythonParser#blank_line.
+    def visitBlank_line(self, ctx:PythonParser.Blank_lineContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by PythonParser#conditional.
     def visitConditional(self, ctx:PythonParser.ConditionalContext):
         return self.visitChildren(ctx)
@@ -54,6 +59,11 @@ class PythonParserVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by PythonParser#callableName.
+    def visitCallableName(self, ctx:PythonParser.CallableNameContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by PythonParser#argumentos.
     def visitArgumentos(self, ctx:PythonParser.ArgumentosContext):
         return self.visitChildren(ctx)
@@ -61,6 +71,16 @@ class PythonParserVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by PythonParser#stat.
     def visitStat(self, ctx:PythonParser.StatContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by PythonParser#assignment.
+    def visitAssignment(self, ctx:PythonParser.AssignmentContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by PythonParser#return_stmt.
+    def visitReturn_stmt(self, ctx:PythonParser.Return_stmtContext):
         return self.visitChildren(ctx)
 
 

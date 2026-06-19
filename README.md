@@ -1,123 +1,228 @@
 # 🐍 Mini-Compilador com ANTLR4 e Python
+# 🐍 Mini-Compilador com ANTLR4 e Python
 
-Este projeto consiste no desenvolvimento de um mini-compilador pedagógico, criado com o objetivo de compreender melhor as principais fases de funcionamento de um compilador.
+Este projeto consiste no desenvolvimento de um **mini-compilador pedagógico inspirado em Python**, criado com o objetivo de compreender melhor as principais fases de funcionamento de um compilador.
 
-O compilador utiliza ANTLR4 para a definição da gramática e geração automática do Lexer e do Parser, enquanto a lógica de análise, interpretação e/ou geração de código é implementada em Python.
+O compilador utiliza **ANTLR4** para a definição da gramática e geração automática do Lexer e do Parser. A lógica de interpretação e execução é implementada em **Python**, através da classe `Compiler` no ficheiro `compiler_def.py`.
+
+---
 
 ## 🎯 Objetivo do Projeto
 
-O principal objetivo deste trabalho é construir um compilador simples capaz de reconhecer uma linguagem própria, validar a sua sintaxe e executar ou traduzir instruções básicas.
+O principal objetivo deste trabalho é construir um compilador simples capaz de reconhecer um subconjunto da linguagem Python, validar a sua sintaxe e executar instruções básicas.
 
-Através deste projeto, é possível compreender melhor conceitos como:
+Através deste projeto, é possível compreender conceitos como:
 
-Análise léxica;
-Análise sintática;
-Árvore de parsing;
-Análise semântica;
-Interpretação ou geração de código;
-Funcionamento de gramáticas formais com ANTLR.
+* Análise léxica
+* Análise sintática
+* Árvore de parsing
+* Análise semântica
+* Interpretação de código
+* Funcionamento de gramáticas formais com ANTLR4
+* Uso do padrão Visitor para percorrer a árvore sintática
 
 ---
 
 ## 🏗️ Estrutura do Compilador
 
-O funcionamento do compilador segue as etapas clássicas de um pipeline de compilação:
+O funcionamento do compilador segue um pipeline dividido em etapas.
 
-1. Análise Léxica
+### 1. Análise Léxica
 
-Nesta fase, o código-fonte é dividido em tokens, como identificadores, números, operadores, palavras-chave e símbolos.
+Nesta fase, o código-fonte é dividido em tokens, como identificadores, números, strings, operadores, palavras-chave e símbolos.
 
-O Lexer é gerado automaticamente pelo ANTLR a partir das regras definidas no ficheiro da gramática.
+O Lexer é gerado automaticamente pelo ANTLR4 a partir das regras definidas em:
 
-2. Análise Sintática
+```txt
+grammar/PythonLexer.g4
+```
+
+### 2. Análise Sintática
 
 O Parser recebe os tokens gerados pelo Lexer e verifica se estes seguem corretamente as regras sintáticas da linguagem.
 
 Caso o código esteja correto, é construída uma Parse Tree, que representa a estrutura do programa.
 
-3. Análise Semântica
+O Parser é definido em:
 
-Nesta etapa, são feitas validações adicionais para garantir que o programa faz sentido do ponto de vista lógico.
+```txt
+grammar/PythonParser.g4
+```
 
-Por exemplo, podem ser verificadas situações como o uso correto de variáveis, expressões e instruções.
+### 3. Síntese / Interpretação
 
-4. Execução / Geração de Código
+A classe `Compiler`, definida em `compiler_def.py`, herda de `PythonParserVisitor` e percorre a árvore sintática.
 
-A lógica principal é implementada em Python, utilizando as classes geradas pelo ANTLR.
+Durante essa visita, o compilador avalia expressões, guarda variáveis, executa condicionais, loops, funções e chamadas built-in como `print`, `len`, `sum` e `range`.
 
-Através de um visitor ou listener, o programa percorre a árvore sintática e executa as instruções ou gera código intermédio/final.
+O fluxo geral é:
+
+```txt
+_sourceCode.txt
+      ↓
+PythonLexer
+      ↓
+PythonParser
+      ↓
+Parse Tree
+      ↓
+Compiler.visit(tree)
+      ↓
+Execução em Python
+```
 
 ---
 
 ## ⚙️ Tecnologias Utilizadas
-ANTLR4 — ferramenta utilizada para gerar automaticamente o Lexer e o Parser a partir da gramática.
-Python — linguagem utilizada para implementar a lógica do compilador.
-Gramática .g4 — ficheiro onde são definidas as regras da linguagem criada.
+
+* Python
+* ANTLR4
+* antlr4-python3-runtime
+* Visual Studio Code
+* Git e GitHub
 
 ---
 
 ## 🧩 Funcionalidades da Linguagem
 
-A linguagem criada suporta várias funcionalidades básicas, tais como:
+A linguagem suporta as seguintes funcionalidades:
 
-Declaração e atribuição de variáveis
+* Atribuição de variáveis
+* Expressões aritméticas
+* Expressões entre parênteses
+* Inteiros e floats
+* Strings
+* Listas
+* Tuplos
+* Sets
+* Dicionários
+* Expressões booleanas
+* Relações entre expressões
+* Estruturas condicionais `if`, `elif` e `else`
+* Ciclos `while`
+* Ciclos `for`
+* Definição de funções com `def`
+* Chamadas de função
+* `return`
+* Built-ins como `print`, `len`, `sum` e `range`
 
-Operações aritméticas básicas
+---
 
-Expressões com parênteses
+## 🧪 Exemplo de Código
 
-Estruturas condicionais if / else
+Exemplo de programa em `_sourceCode.txt`:
 
-Ciclos while
-
-Função de output print
-
-Interpretação de instruções sequenciais
-
-### 🧪 Exemplo de Código
-
-Exemplo de um programa escrito na linguagem desenvolvida:
-
+```python
 x = 10
-y = 5
-resultado = (x + y) * 2
+y = 3.5
+z = x + y
 
-print resultado
+def square(n):
+    return n ** 2
 
-Neste exemplo, são declaradas duas variáveis, é calculado um resultado através de uma expressão aritmética e, no final, esse valor é apresentado no output.
+result = square(x)
+
+if result > 50:
+    print(result)
+else:
+    print(z)
+
+i = 0
+while i < 3:
+    i = i + 1
+
+for k in range(5):
+    print(k)
+```
+
+Saída esperada:
+
+```txt
+100
+0
+1
+2
+3
+4
+```
+
+---
 
 ## ▶️ Como Executar
 
-Para executar o projeto, é necessário ter o Python e o ANTLR4 instalados.
+### 1. Instalar dependências
 
-1. Instalar as dependências
-pip install antlr4-python3-runtime
-2. Gerar os ficheiros do ANTLR
-antlr4 -Dlanguage=Python3 NomeDaGramatica.g4
-3. Executar o compilador
-python main.py
+```powershell
+py -m pip install antlr4-python3-runtime
+py -m pip install antlr4-tools
+```
 
-Nota: os nomes dos ficheiros podem variar consoante a estrutura do projeto.
+### 2. Gerar os ficheiros do ANTLR4
+
+Dentro da pasta `grammar`:
+
+```powershell
+cd grammar
+& "C:\Users\rodri\AppData\Roaming\Python\Python314\Scripts\antlr4.exe" -Dlanguage=Python3 -no-listener -visitor *.g4
+```
+
+Este comando gera ficheiros como:
+
+```txt
+PythonLexer.py
+PythonParser.py
+PythonParserVisitor.py
+PythonLexer.tokens
+PythonParser.tokens
+```
+
+### 3. Executar o compilador
+
+Na raiz do projeto:
+
+```powershell
+py compiler.py _sourceCode.txt
+```
+
+### 4. Executar em modo debug
+
+Para visualizar os contextos `ctx` visitados:
+
+```powershell
+py compiler.py _sourceCode.txt --debug
+```
+
+---
 
 ## 📁 Organização do Projeto
 
-Uma possível organização dos ficheiros do projeto é:
+```txt
+Minicompilador-Python/
+├── README.md
+├── compiler.py
+├── compiler_def.py
+├── _sourceCode.txt
+├── docs/
+│   └── python_lexer_elements.md
+└── grammar/
+    ├── PythonLexer.g4
+    ├── PythonParser.g4
+    ├── PythonLexer.py
+    ├── PythonParser.py
+    └── PythonParserVisitor.py
+```
 
-.
-├── NomeDaGramatica.g4
-├── main.py
-├── visitor.py
-├── exemplos/
-│   └── exemplo.txt
-└── README.md
+---
 
 ## 📌 Conclusão
 
 Este projeto permitiu aplicar, de forma prática, os conceitos fundamentais de compiladores.
 
-Com a utilização do ANTLR4, foi possível automatizar a criação do Lexer e do Parser, focando o desenvolvimento na interpretação da linguagem e na implementação da lógica em Python.
+Com a utilização do ANTLR4, foi possível automatizar a criação do Lexer e do Parser, focando o desenvolvimento na interpretação da linguagem através de Python.
 
 O mini-compilador desenvolvido demonstra, de forma simples, como uma linguagem pode ser analisada, validada e executada a partir de uma gramática formal.
+
+---
 
 ## 👥 Autores
 

@@ -1,0 +1,18 @@
+# ANTLR-generated files specifically inside /grammar
+grammar/*Lexer.py
+grammar/*Parser.py
+grammar/*Listener.py
+grammar/*Visitor.py
+grammar/*.tokens
+grammar/*.interp
+grammar/.antlr/
+
+# Python cache files
+__pycache__/
+*.pyc
+grammar/__pycache__/
+
+# Python Virtual Environments
+.venv/
+venv/
+env/

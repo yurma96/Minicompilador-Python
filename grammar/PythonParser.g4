@@ -5,7 +5,11 @@ options {
 }
 
 code
-    : (stat | conditional | func | func_call | loop_while | loop_for)* EOF
+    : (stat | conditional | func | func_call | loop_while | loop_for | blank_line)* EOF
+    ;
+
+blank_line
+    : NEWLINE
     ;
 
 conditional
@@ -30,7 +34,12 @@ iteravel
     ;
 
 bloco
-    : (stat | conditional | func | func_call | loop_while | loop_for)+
+    : stat
+    | conditional
+    | func
+    | func_call
+    | loop_while
+    | loop_for
     ;
 
 func
@@ -42,7 +51,29 @@ parametros
     ;
 
 func_call
-    : ids LPAREN argumentos? RPAREN
+    : callableName LPAREN argumentos? RPAREN
+    ;
+
+callableName
+    : ids
+    | PRINT
+    | INPUT
+    | LEN
+    | RANGE
+    | SUM
+    | MAX
+    | MIN
+    | ABS
+    | ROUND
+    | SORTED
+    | INT_TYPE
+    | FLOAT_TYPE
+    | STR_TYPE
+    | BOOL_TYPE
+    | LIST_TYPE
+    | TUPLE_TYPE
+    | DICT_TYPE
+    | SET_TYPE
     ;
 
 argumentos
@@ -50,8 +81,18 @@ argumentos
     ;
 
 stat
-    : expr NEWLINE?
+    : assignment NEWLINE?
+    | return_stmt NEWLINE?
+    | expr NEWLINE?
     | query NEWLINE?
+    ;
+
+assignment
+    : ids ASSIGN (expr | query)
+    ;
+
+return_stmt
+    : RETURN (expr | query)?
     ;
 
 expr
