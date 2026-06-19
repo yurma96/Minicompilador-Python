@@ -134,9 +134,10 @@ STRING_LITERAL: '"' (~["\\] | '\\' .)* '"' | '\'' (~['\\] | '\\' .)* '\'';
 
 // Comentarios
 COMMENT: '#' ~[\r\n]* -> skip;
+NEWLINE: '\r'? '\n';
 
 // As regras finais devem ficar nesta ordem: identificadores, letras, digitos e espacos.
 IDENTIFIER: LETTER (LETTER | DIGIT)*;
 LETTER: [a-zA-Z_];
 DIGIT: [0-9];
-WS: [ \t\r\n]+ -> skip;
+WS: [ \t]+ -> skip;
