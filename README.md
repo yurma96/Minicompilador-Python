@@ -1,5 +1,4 @@
 # 🐍 Mini-Compilador com ANTLR4 e Python
-# 🐍 Mini-Compilador com ANTLR4 e Python
 
 Este projeto consiste no desenvolvimento de um **mini-compilador pedagógico inspirado em Python**, criado com o objetivo de compreender melhor as principais fases de funcionamento de um compilador.
 
@@ -153,30 +152,54 @@ Saída esperada:
 ### 1. Instalar dependências
 
 ```powershell
-py -m pip install antlr4-python3-runtime
-py -m pip install antlr4-tools
+py -m pip install -r requirements.txt
 ```
 
-### 2. Gerar os ficheiros do ANTLR4
+### 2. Automação de Compilação (build.bat)
 
-Dentro da pasta `grammar`:
+Para facilitar o desenvolvimento, disponibilizamos um script (`build.bat`) que compila rapidamente a gramática do ANTLR4 para Python. Deve correr este script sempre que fizer alterações aos ficheiros `.g4`.
 
+**Como utilizar:**
+No terminal (na pasta raiz do projeto), execute:
 ```powershell
-cd grammar
-& "C:\Users\rodri\AppData\Roaming\Python\Python314\Scripts\antlr4.exe" -Dlanguage=Python3 -no-listener -visitor *.g4
-```
-
-Este comando gera ficheiros como:
-
-```txt
-PythonLexer.py
-PythonParser.py
-PythonParserVisitor.py
-PythonLexer.tokens
-PythonParser.tokens
+.\build.bat
 ```
 
 ### 3. Executar o compilador
+
+Após compilar a gramática com o `build.bat`, pode executar o interpretador na raiz do projeto:
+
+```powershell
+py compiler.py _sourceCode.txt
+```
+
+*(Opcional) Executar em modo debug para visualizar os contextos visitados:*
+```powershell
+py compiler.py _sourceCode.txt --debug
+```
+
+### 4. Teste Visual da Árvore Sintática (gui.bat)
+
+Se precisar de visualizar a árvore de parsing gráfica para efeitos de depuração, utilize o script de interface gráfica (`gui.bat`).
+
+**Como utilizar:**
+1. No terminal (na pasta raiz do projeto), execute:
+   ```powershell
+   .\gui.bat
+   ```
+2. Escreva o código que pretende testar na consola.
+3. Quando terminar, pressione `Ctrl+Z` e de seguida `Enter` para gerar a árvore.
+
+### 5. Gerar os ficheiros do ANTLR4 (Manualmente)
+
+Caso não queira usar o `build.bat`, execute dentro da pasta `grammar`:
+
+```powershell
+cd grammar
+& "C:\Users\<NOME_UTILIZADOR>\AppData\Roaming\Python\Python<VERSAO>\Scripts\antlr4.exe" -Dlanguage=Python3 -no-listener -visitor *.g4
+```
+
+### 4. Executar o compilador
 
 Na raiz do projeto:
 
@@ -184,7 +207,7 @@ Na raiz do projeto:
 py compiler.py _sourceCode.txt
 ```
 
-### 4. Executar em modo debug
+### 5. Executar em modo debug
 
 Para visualizar os contextos `ctx` visitados:
 
@@ -199,17 +222,17 @@ py compiler.py _sourceCode.txt --debug
 ```txt
 Minicompilador-Python/
 ├── README.md
+├── requirements.txt
 ├── compiler.py
 ├── compiler_def.py
+├── build.bat
+├── gui.bat
 ├── _sourceCode.txt
 ├── docs/
 │   └── python_lexer_elements.md
 └── grammar/
     ├── PythonLexer.g4
-    ├── PythonParser.g4
-    ├── PythonLexer.py
-    ├── PythonParser.py
-    └── PythonParserVisitor.py
+    └── PythonParser.g4
 ```
 
 ---
