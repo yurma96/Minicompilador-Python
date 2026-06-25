@@ -96,22 +96,30 @@ return_stmt
     ;
 
 expr
-    : operacoesComExpressoes
+    : exprSoma
     ;
 
 query
-    : operacoesBooleanasEntreQuerys
+    : queryOr
     ;
 
-operacoesBooleanasEntreQuerys
-    : queryTermo ((AND | OR) queryTermo)*
+queryOr
+    : queryAnd (OR queryAnd)*
+    ;
+
+queryAnd
+    : queryNot (AND queryNot)*
+    ;
+
+queryNot
+    : NOT queryNot
+    | queryTermo
     ;
 
 queryTermo
     : valoresBooleanos
     | relacoesEntreExpressoes
     | queryEntreParenteses
-    | NOT queryTermo
     | ids
     ;
 
@@ -128,8 +136,16 @@ relacoesEntreExpressoes
     : expr operadorRelacional expr
     ;
 
-operacoesComExpressoes
-    : termo (operadorAritmetico termo)*
+exprSoma
+    : exprMultiplicacao ((PLUS | MINUS) exprMultiplicacao)*
+    ;
+
+exprMultiplicacao
+    : exprPotencia ((MULT | DIV | FLOOR_DIV | MOD) exprPotencia)*
+    ;
+
+exprPotencia
+    : termo (POWER termo)*
     ;
 
 termo
@@ -192,16 +208,6 @@ numeros
 
 expressoesEntreParenteses
     : LPAREN expr RPAREN
-    ;
-
-operadorAritmetico
-    : PLUS
-    | MINUS
-    | MULT
-    | DIV
-    | FLOOR_DIV
-    | MOD
-    | POWER
     ;
 
 operadorRelacional
